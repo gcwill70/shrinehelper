@@ -1,2 +1,32 @@
-<!DOCTYPE html>
-<h1>Hello world</h1>
+<!doctype html>
+<html>
+    <head>
+        <title>Shrine Helper</title>
+    </head>
+    <body>
+        <h1>Shrine Helper</h1>
+        <p>This tool will help you find any missing shrines you have. Just upload screenshots of the top and bottom halves of your map, choose what information you want to be revealed about them, and click 'Find Shrines'! This tool won't work if you don't at least have all the towers activated.</p>
+
+        <p>Alright that's it. Happy hunting!</p>
+
+        <ol>
+            <li>Upload screenshots
+                <p>Open up your map and move the cursor near position that's shown in each example. Take the screenshots and upload them.
+                <input id='fileTopId' type='file' hidden/>
+                <input id='buttonTopid' type='button' value='Upload Top Half' />
+                <input id='fileBottomId' type='file' hidden/>
+                <input id='buttonBottomid' type='button' value='Upload Bottom Half' />
+                </p>
+            </li>
+            <li>Choose Info to Show
+            <p>Choose what information will be shown about each missing shrine. I recommend trying to find them with as little help as possible.
+            - Shrine Name
+            - Region (i) -> Region of shrine (Central Hyrule, Hebra, Eldin, etc.)
+            - Discovery Method (i) -> This option will show how the shrine can be discovered. Some shrines are discoverable with the Sheikah Sensor while some have an associated quest.</p>
+            </li>
+            <li>Discover Shrines
+            <input id='buttonFindShrinesid' type='button' value='Find Shrines!' />
+            </li>
+        </ol>
+    </body>
+</html>

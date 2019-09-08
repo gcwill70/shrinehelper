@@ -5,30 +5,47 @@
     </head>
     <body>
         <h1>Shrine Helper</h1>
-        <script src='index.js'></script>
-        <p>This tool will help you find any missing shrines you have. Just upload screenshots of the top and bottom halves of your map, choose what information you want to be revealed about them, and click 'Find Shrines'! This tool won't work if you don't at least have all the towers activated.</p>
+        <p>Quickly find any missing shrines!</p>
 
+        <h2>A Few Notes</h2>
+        <ul>
+            <li>This tool won't work if you don't have all the towers activated.</li>
+            <li>If you have it, the Travel Medallion must be moved out of the way of any of the potential shrine locations.<br>I recommend placing it in <a href="">the middle of Hyrule field east of the Central Tower.</a>
+            <li>And of course make sure your shrine tracker is turned on.</li>
+        </ul>
         <p>Alright that's it. Happy hunting!</p>
 
+        <h2>Instructions</h2>
         <ol>
             <li>Upload screenshots
                 <p>Open up your map and move the cursor near position that's shown in each example. Take the screenshots and upload them.<br>
-                <input id='fileTopId' type='file' hidden/>
-                <input id='buttonTopId' type='button' value='Upload Top Half'/><br>
-                <input id='fileBottomId' type='file' hidden/>
-                <input id='buttonBottomid' type='button' value='Upload Bottom Half'/><br>
+
+                <input id='fileTopId' type='file' accept='image/jpeg' hidden/>
+                <input id='buttonTopId' type='button' value='Upload Top Half'/>
+                <br>
+                <canvas id="canvasTopId"></canvas>
+                <br>
+
+                <input id='fileBottomId' type='file' accept='image/jpeg' hidden/>
+                <input id='buttonBottomId' type='button' value='Upload Bottom Half'/>
+                <br>
+                <canvas id="canvasBottomId"></canvas>
+                <br>
                 </p>
             </li>
-            <li>Choose Info to Show
-            <p>Choose what information will be shown about each missing shrine. I recommend trying to find them with as little help as possible.<br>
-            <input id='shrineNameId' type='checkbox' name='shrineName'/>Shrine Name<br>
-            <input id='shrineRegionId' type='checkbox' name='shrineInfo'/>Region (i) -> Region of shrine (Central Hyrule, Hebra, Eldin, etc.)<br>
-            <input id='discoveryMethodId' type='checkbox' name='shrineInfo'/>Discovery Method (i) -> This option will show how the shrine can be discovered. Some shrines are discoverable with the Sheikah Sensor while some have an associated quest.<br>
+            <li>Show hints
+            <p>Choose if the tool should show hints for shrines instead of exact locations.<br>
+            <input id='showHintYesId' type='radio' name='showHint' value='yes' checked='yes'/>Show Hints (recommended)<br>
+            <input id='showHintNoId' type='radio' name='showHint' value='no'/>Show Exact Locations<br>
             </p>
             </li>
-            <li>Discover Shrines<br>
-            <input id='buttonFindShrinesId' type='button' value='Find Shrines!'/>
+            <li>Find Shrines!<br>
+            <input id='buttonFindShrinesId' type='button' value='Go'/>
             </li>
         </ol>
+
+        <h2>Credits</h2>
+        <p>Big thanks to <a href="https://www.reddit.com/r/Breath_of_the_Wild/comments/6w3noy/shrine_by_location_check_off_list/">u/Katme0w for providing a list of shrines by region</a>! And although I wasn't aware of it when thinking of this idea, there's another <a href="https://github.com/0x213F/shrine-finder">helper by 0x231F</a> that deserves a mention!</p>
     </body>
+    <script src="index.js"></script>
 </html>

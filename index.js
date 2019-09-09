@@ -67,6 +67,7 @@ function openBottomDialog() {
 
 topFileSelector.onchange = function(event) {
   topFiles = event.target.files;
+  findShrines();
 }
 
 bottomFileSelector.onchange = function(event) {
@@ -77,39 +78,47 @@ function findShrines() {
   //1. Scan top screenshot
   if (topFiles && topFiles[0]) {
     var topImageFile = topFiles[0];
-    var reader = new FileReader();
-    reader.onload = function(event) {
-      var context = topCanvas.getContext("2d");
-      var img = new Image();
-      context.drawImage(event.target.result, 0, 0);
+    var context = topCanvas.getContext("2d");
+    var url = URL.createObjectURL(topImageFile);
+    var img = new Image();
+    img.onload = function() {
+      context.drawImage(img, 0, 0);
       var imageData = context.getImageData(0, 0, topCanvas.width, topCanvas.height);
-      img.onload = function() {
-        
-        const imageLength = imageData.height * imageData.width * 4;
-        var i = 0;
-        var redPixel, greenPixel, bluePixel, alphaPixel;
-        // while (i < imageLength)
-        // {
-        //   redPixel = i++; // red
-        //   greenPixel = i++; // green
-        //   bluePixel = i++; // blue
-        //   alphaPixel = i++; // alpha
-        //   if (imageData.data[bluePixel] > 150 && imageData.data[bluePixel] < 160)
-        //   {
-        //     imageData.data[redPixel] = 255;
-        //     imageData.data[greenPixel] = 0;
-        //     imageData.data[bluePixel] = 0;
-        //   }
-        // }
-        context.putImageData(imageData, 0, 0);
+      var r, g, b, a;
+      const x = 150;
+      for (var i = 0; i < imageData.data.length; i += 4)
+      {
+        r = i;
+        g = i + 1;
+        b = i + 2;
+        a = i + 3;
+        imageData.data[r] = 0;
+        imageData.data[g] = 0;
+        if (imageData.data[b] > 150 && InRange(imageData.data[r], 60, 100) && InRange(imageData.data[g], 150, 100))
+        {
+          imageData[b] = 255;
+        }
+        else
+        {
+          imageData[b] = 0;
+          imageData.data[a] = 0;
+        }
       }
-      img.src = URL.createObjectURL(event.target.result);
-    }
-    reader.readAsDataURL(topImageFile);
+      context.putImageData(imageData, 0, 0);
+    };
+    img.src = url;
   }
   //2. Scan bottom screenshot
 }
 
-function getImageInfo(result) {
-  
+function InRange(val, desired, tolerance)
+{
+  var dist = val - desired;
+  if (dist < 0)
+  {
+    dist *= -1;
+  }
+  var ratio = dist / desired;
+  var percentage = ratio * 100;
+  return percentage <= tolerance;
 }

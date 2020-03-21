@@ -215,8 +215,6 @@ bottomFileSelector.onchange = function(event) {
   bottomFiles = event.target.files;
 }
 
-// var Pixels;
-
 function findShrines() {
   //1. Scan top screenshot
   if (topFiles && topFiles[0])
@@ -228,29 +226,33 @@ function findShrines() {
     {
       context.drawImage(img, 0, 0);
       topImageData = context.getImageData(0, 0, topCanvas.width, topCanvas.height);
-      var r, g, b, a;
-      var j = 0;
-      // Pixels = new Array(topImageData.width * topImageData.height);
+      var Pixel = Array.from(Array(topImageData.width), () => new Array(topImageData.height));
+      // Copy image to pixel array
+      var k = 0; var l = 0;
       for (var i = 0; i < topImageData.data.length; i += 4)
       {
-        r = i + 0;
-        g = i + 1;
-        b = i + 2;
-        a = i + 3;
-        if (IsShrineColor(i))
+        Pixel[k++][l++] = { red: topImageData.data[i], green: topImageData.data[i + 1], blue: topImageData.data[i + 2], alpha: topImageData.data[i + 3] };
+      }
+      for (var i = 0; i < topImageData.width; i++)
+      {
+        for (var j = 0; j < topImageData.height; j++)
         {
-          topImageData.data[r] = 255;
-          topImageData.data[g] = 0;
-          topImageData.data[b] = 0;
-          if ((i - j) > 100)
+          if (IsShrineColor(Pixel[i][j]))
           {
-            console.log(i);
-            topImageData.data[r] = 0;
-            topImageData.data[g] = 255;
-            topImageData.data[b] = 0;
-            j = i;
+            Pixel[i][j].red = 255;
+            Pixel[i][j].green = 0;
+            Pixel[i][j].blue = 0;
           }
         }
+      }
+      k = 0;
+      l = 0;
+      for (var i = 0; i < topImageData.data.length; i += 4)
+      {
+        topImageData.data[i] = Pixel[k][l].red;
+        topImageData.data[i + 1] = Pixel[k][l].green;
+        topImageData.data[i + 2] = Pixel[k][l].blue;
+        topImageData.data[i + 3] = Pixel[k++][l++].alpha;
       }
       context.putImageData(topImageData, 0, 0);
     };
@@ -271,20 +273,15 @@ function InRange(val, desired, tolerance)
   return (percentage <= tolerance);
 }
 
-function IsShrineColor(index)
+function IsShrineColor(pixel)
 {
-  r = index;
-  g = index + 1;
-  b = index + 2;
-  a = index + 3;
-
   for (var j = 0; j < ShrineColors.length; j++)
   {
-    if (InRange(topImageData.data[r], ShrineColors[j].red, 15))
+    if (InRange(pixel.red, ShrineColors[j].red, 15))
     {
-      if (InRange(topImageData.data[g], ShrineColors[j].green, 15))
+      if (InRange(pixel.green, ShrineColors[j].green, 15))
       {
-        if (InRange(topImageData.data[b], ShrineColors[j].blue, 15))
+        if (InRange(pixel.blue, ShrineColors[j].blue, 15))
         {
           return true;
         }
